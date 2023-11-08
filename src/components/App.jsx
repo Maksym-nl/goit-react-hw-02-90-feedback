@@ -2,6 +2,7 @@ import { Component } from 'react';
 import { Section } from './Section/Section';
 import { Feedback } from './Feedback/Feedback';
 import { Statistic } from './Statistic/Statistic';
+import { Notification } from './Notification/Notification';
 
 export class App extends Component {
   state = {
@@ -38,13 +39,17 @@ export class App extends Component {
           />
         </Section>
         <Section title="Statistic">
-          <Statistic
-            good={good}
-            neutral={neutral}
-            bad={bad}
-            total={total}
-            positiveFeedback={positiveFeedback}
-          />
+          {total === 0 ? (
+            <Notification message="There is no feedback" />
+          ) : (
+            <Statistic
+              good={good}
+              neutral={neutral}
+              bad={bad}
+              total={total}
+              positiveFeedback={positiveFeedback}
+            />
+          )}
         </Section>
       </>
     );
