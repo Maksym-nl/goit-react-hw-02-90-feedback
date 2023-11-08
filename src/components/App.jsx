@@ -1,16 +1,52 @@
-export const App = () => {
-  return (
-    <div
-      style={{
-        height: '100vh',
-        display: 'flex',
-        justifyContent: 'center',
-        alignItems: 'center',
-        fontSize: 40,
-        color: '#010101'
-      }}
-    >
-      React homework template
-    </div>
-  );
-};
+import { Component } from 'react';
+import { Section } from './Section/Section';
+import { Feedback } from './Feedback/Feedback';
+import { Statistic } from './Statistic/Statistic';
+
+export class App extends Component {
+  state = {
+    good: 0,
+    neutral: 0,
+    bad: 0,
+  };
+  handleClick = option => {
+    this.setState(prewState => ({
+      [option]: prewState[option] + 1,
+    }));
+  };
+
+  countTotalFeedback = () => {
+    const { good, neutral, bad } = this.state;
+    return good + neutral + bad;
+  };
+
+  countPositiveFeedbackPercentage = () => {
+    const total = this.countTotalFeedback();
+    return Math.ceil((this.state.good / total) * 100) || 0;
+  };
+  render() {
+    const { good, neutral, bad } = this.state;
+    const total = this.countTotalFeedback();
+    const positiveFeedback = this.countPositiveFeedbackPercentage();
+
+    return (
+      <>
+        <Section title="Please leave Feedback">
+          <Feedback
+            handleClick={this.handleClick}
+            options={Object.keys(this.state)}
+          />
+        </Section>
+        <Section title="Statistic">
+          <Statistic
+            good={good}
+            neutral={neutral}
+            bad={bad}
+            total={total}
+            positiveFeedback={positiveFeedback}
+          />
+        </Section>
+      </>
+    );
+  }
+}
